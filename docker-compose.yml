@@ -1,0 +1,40 @@
+version: '3'
+services:
+    # db:
+    # image: '*'
+    # container_name: *
+    # restart: always
+    # env_file:
+    #     - .env
+    # environment:
+    # ports:
+    #     - :
+    # volumes:
+    #     - :
+    server:
+        container_name: server
+        build: ./server
+        env_file:
+            - .env
+        # environment:
+        # ports:
+        #     - :
+        volumes:
+            - ./shared:/usr/src/shared
+            - ./server:/usr/src/api
+            - /usr/src/api/node_modules # unmonted
+        depends_on:
+            - db
+    client:
+        container_name: client
+        build: ./client
+        stdin_open: true
+        env_file:
+            - .env
+        # environment:
+        # ports:
+        #     - :
+        volumes:
+            - ./shared:/usr/src/shared
+            - ./client:/usr/src/app
+            - /usr/src/app/node_modules
